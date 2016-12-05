@@ -1,13 +1,14 @@
 <?php
-  include("conexao.php");
-
-  if (isset($_POST['nomeloja']) && isset($_POST['descricaoloja']) && isset($_POST['estabelecimento']) && isset($_POST['descricaoshopping'])) {
+  include("common/conexao.php");
+  if (isset($_POST['nomeloja']) && isset($_POST['descricaoloja']) && isset($_POST['estabelecimento']) && isset($_POST['shopping_box']) && isset($_POST["checkboxvar"])) {
 
     $nomeloja = $_POST['nomeloja'];
     $descricaoloja = $_POST['descricaoloja'];
     $estabelecimento = $_POST['estabelecimento'];
     $imagemmarca = $_FILES["imagemmarca"];
     $imagemfachada = $_FILES["imagemfachada"];
+    $categorias = $_POST["checkboxvar"];
+    $shopping_box = $_POST["shopping_box"];
 
     if($imagemmarca != NULL) {
       $nomeFinalMarca = time().'marca.jpg';
@@ -37,7 +38,7 @@
       echo "Você não cadastrou uma imagem correta!";
     }
 
-    $query = "INSERT INTO `loja` (idloja, localizacao_loja, nome_loja, idestabelecimento, descricao, logoloja, fotofachada, idbox) VALUES (NULL, NULL, '$nomeloja', '$estabelecimento', '$descricaoloja', $mysqlImgMarca, $mysqlImgFachada, NULL)";
+    $query = "INSERT INTO `loja` (idloja, localizacao_loja, nome_loja, idestabelecimento, descricao, logoloja, fotofachada, idbox) VALUES (NULL, DEFAULT, '$nomeloja', '$estabelecimento', '$descricaoloja', '$mysqlImgMarca', '$mysqlImgFachada', '$shopping_box')";
     $result = mysqli_query($mysqli, $query);
 
     if($result){
@@ -46,7 +47,7 @@
       echo "Falha!";
     }
   } else {
-    echo $_POST['cidade'];
+    echo $_POST['descricaoshopping'];
   }
 ?>
 
@@ -59,30 +60,12 @@
 </head>
 <body>
 
-  <header>
-    <h1>Isto é um header.</h1>
-  </header>
-
-  <nav>
-    <ul>
-      <li><a href="index.php">Início</a></li>
-      <li><a href="contato.php">Contato</a></li>
-      <li class="dropdown">
-        <a href="#" class="dropbtn">Shoppings</a>
-        <div class="dropdown-content">
-          <a href="garten.php">Garten Shopping</a>
-          <a href="patiochapeco.php">Shopping Chapecó</a>
-          <a href="continente.php">Continente Shopping</a>
-        </div>
-      </li>
-      <li style="float:right"><a href="login.php">Login</a></li>
-      <li style="float:right"><a href="cadastro.php">Register</a></li>
-    </ul>
-  </nav>
+  <?php include ("common/header.php"); ?>
+  <?php include ("common/navbar.php"); ?>
 
 
   <div class="cadastro">
-    <form enctype="multipart/form-data" action="upload.php" method="post">
+    <form enctype="multipart/form-data" method="post">
       <fieldset>
         <div class="cadastro_content">
 
@@ -114,13 +97,27 @@
           <br>
           <br>
 
+          <label for="">Categorias da Loja</label>
+          <?php
+            $sqlcategorias = "select * from categorias;";
+            $resultcategorias = mysqli_query($mysqli, $sqlcategorias);
+            while ($linhacategorias = mysqli_fetch_array($resultcategorias)) {
+              $idcateg = $linhacategorias["idcategorias"];
+              $desccateg = $linhacategorias["descricao"];
+              echo "<br><input type='checkbox' name='checkboxvar[]' value='$idcateg'/>".
+                  utf8_encode($desccateg);
+            }
+          ?>
+
+          <br>
+          <br>
           <?php
             include("conexao.php");
             $query = "SELECT * FROM shopping_box";
             $result = mysqli_query($mysqli, $query);
           ?>
 
-          <label for="">Selecione um Estabelecimento</label>
+          <label for="">Selecione uma Box</label>
           <select name="shopping_box">
             <?php while($prod = mysqli_fetch_assoc($result)) { ?>
               <option value="<?php echo $prod['idbox'] ?>"><?php echo utf8_encode($prod['nome_box']) ?></option>

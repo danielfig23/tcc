@@ -6,40 +6,15 @@
   <link type="text/css" rel="stylesheet" href="style.css">
 
   <?php
-    include("conexao.php")
+    require('common/check_loggedin.php');
+    include("common/conexao.php");
   ?>
 
 </head>
 <body>
 
-  <header>
-    <h1>Isto é um header do ADMINISTRADOR.</h1>
-  </header>
-
-  <nav>
-    <ul>
-      <li><a href="index.php">Início</a></li>
-      <li><a href="contato.php">Contato</a></li>
-      <li class="dropdown">
-        <a href="#" class="dropbtn">Shoppings</a>
-        <div class="dropdown-content">
-          <a href="garten.php">Garten Shopping</a>
-          <a href="patiochapeco.php">Shopping Chapecó</a>
-          <a href="continente.php">Continente Shopping</a>
-        </div>
-      </li>
-      <li class="dropdown">
-        <a href="#" class="dropbtn">Cadastrar</a>
-      <div class="dropdown-content">
-        <a href="#">Cadastrar Shoppings</a>
-        <a href="#">Cadastrar Categorias</a>
-        <a href="cadastroloja.php">Cadastrar Lojas</a>
-      </div>
-      </li>
-      <li style="float:right"><a href="login.php">Login</a></li>
-      <li style="float:right"><a href="cadastro.php">Register</a></li>
-    </ul>
-  </nav>
+  <?php include ("common/header.php"); ?>
+  <?php include ("common/navbar.php"); ?>
 
   <div class="content">
     <a href="garten.php"><h3 class="shopping">Garten Shopping</h3></a>

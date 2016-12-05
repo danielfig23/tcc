@@ -1,5 +1,8 @@
 <?php
-  include("conexao.php");
+
+  include("common/conexao.php");
+  session_start();
+  session_destroy();
 
   if (isset($_POST['email']) && isset($_POST['password'])){
 
@@ -16,6 +19,8 @@
       $gotHash = $getHash['senha_adm'];
       if ($result){
         if (password_verify($password, $gotHash)){
+          session_start();
+          $_SESSION["user"] = $username;
           header("location:painel.php");
         } else {
           echo "<script>alert('Usuário ou senha incorretos!');</script>";
@@ -38,26 +43,8 @@
 </head>
 <body>
 
-  <header>
-    <h1>Isto é um header.</h1>
-  </header>
-
-  <nav>
-    <ul>
-      <li><a href="index.php">Início</a></li>
-      <li><a href="contato.php">Contato</a></li>
-      <li class="dropdown">
-        <a href="#" class="dropbtn">Shoppings</a>
-        <div class="dropdown-content">
-          <a href="garten.php">Garten Shopping</a>
-          <a href="patiochapeco.php">Shopping Chapecó</a>
-          <a href="continente.php">Continente Shopping</a>
-        </div>
-      </li>
-      <li style="float:right"><a href="login.php">Login</a></li>
-      <li style="float:right"><a href="cadastro.php">Register</a></li>
-    </ul>
-  </nav>
+  <?php include ("common/header.php"); ?>
+  <?php include ("common/navbar.php"); ?>
 
   <div class="cadastro">
     <form method="POST">
