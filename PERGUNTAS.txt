@@ -1,0 +1,5 @@
+AJAX DAS CIDADES;
+AJAX DAS BOXES;
+SELECT das categorias retornando beagle em todas as categorias.
+COMO FAZER A BEAGLE APENAS PERTENCER Á CATEGORIA MODA. (salvar o código SQL)
+COMO FAZER PARA ENCONTRAR A BEAGLE AO PROCURAR NA CATEGORIA MODA (por exemplo, ao clicar em shoppig chapecó)

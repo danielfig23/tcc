@@ -33,7 +33,7 @@
       <div class="dropdown-content">
         <a href="#">Cadastrar Shoppings</a>
         <a href="#">Cadastrar Categorias</a>
-        <a href="#">Cadastrar Lojas</a>
+        <a href="cadastroloja.php">Cadastrar Lojas</a>
       </div>
       </li>
       <li style="float:right"><a href="login.php">Login</a></li>

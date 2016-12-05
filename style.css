@@ -38,6 +38,10 @@ footer {
   text-align: center;
 }
 
+.grande {
+  line-height: 6em;
+}
+
 /*Segundo o site: http://www.w3schools.com/css/css_navbar.asp*/
 
 ul {

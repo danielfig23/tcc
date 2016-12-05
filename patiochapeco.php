@@ -30,20 +30,30 @@
 
   <div class="content">
     <h2 class="shopping">Shopping Chapecó</h2>
-    <h3>Categorias</h3>
 
     <?php
-
-      if(isset($_GET["id_categorias"])) {
-          $id = $_GET["id_categorias"];
-          $query = "SELECT * FROM categorias";
-      }
-      else {
-        include("conexao.php");
+      include("conexao.php");
+      if(isset($_GET["id"])) {
+        echo "<h3>Lojas</h3>";
+        $id = $_GET["id"];
+        $query = "SELECT * from lojascategorias, loja, categorias WHERE loja.idloja = lojascategorias.idloja AND lojascategorias.idcategorias = categorias.idcategorias AND categorias.idcategorias = 1";
+        $result = mysqli_query($mysqli, $query);
+        foreach ($result as $loja) {
+          echo '<a href="patiochapeco.php?idloja='.$loja["idloja"].'">'.utf8_encode($loja["nome_loja"]).'</a><br/>';
+        }
+      } elseif (isset($_GET["idloja"])) {
+        $id = $_GET["idloja"];
+        $query = "SELECT * from loja WHERE idloja = $id";
+        $result = mysqli_query($mysqli, $query);
+        foreach ($result as $n_loja) {
+          echo '<h3>'.utf8_encode($n_loja["nome_loja"]).'</3>';
+        }
+      } else {
+        echo "<h3>Categorias</h3>";
         $query = "SELECT * FROM categorias";
         $result = mysqli_query($mysqli, $query);
         foreach ($result as $categ) {
-          echo '<a href="patiochapeco.php?id='.$categ["id_categorias"].'>'.$categ["descricao"].'</a><br/>';
+          echo '<a href="patiochapeco.php?id='.$categ["idcategorias"].'">'.utf8_encode($categ["descricao"]).'</a><br/>';
         }
       }
     ?>
