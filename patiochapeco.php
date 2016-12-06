@@ -11,7 +11,7 @@
   <?php include ("common/navbar.php"); ?>
 
   <div class="content">
-    <h2 class="shopping">Shopping Chapecó</h2>
+    <h2 class="shopping">Patio Chapecó</h2>
 
     <?php
       include("common/conexao.php");

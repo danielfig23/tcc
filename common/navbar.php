@@ -11,13 +11,15 @@
         <?php
           session_start();
           if(isset($_SESSION["user"])){
-            echo '<li class="dropdown">
+            echo '
+            <li class="dropdown">
               <a href="#" class="dropbtn">Cadastrar</a>
-            <div class="dropdown-content">
-              <a href="#">Cadastrar Shoppings</a>
-              <a href="#">Cadastrar Categorias</a>
-              <a href="cadastroloja.php">Cadastrar Lojas</a>
-            </div>
+              <div class="dropdown-content">
+                <a href="cadastroshopping.php">Cadastrar Shoppings</a>
+                <a href="cadastrocategoria.php">Cadastrar Categorias</a>
+                <a href="cadastrobox.php">Cadastrar Box</a>
+                <a href="cadastroloja.php">Cadastrar Lojas</a>
+              </div>
             </li>';
           }
         ?>
@@ -34,6 +36,5 @@
         echo "<li style='float:right'><a href='cadastro.php'>Register</a></li>";
       }
     ?>
-
   </ul>
 </nav>

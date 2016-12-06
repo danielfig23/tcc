@@ -7,12 +7,15 @@ header {
 }
 
 body {
+  font-family: 'Open Sans', 'Helvetica Neue', Arial, Helvetica, sans-serif;
   margin: 0px;
 }
 
 nav {
   text-align: center;
   background-color: #191919;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 footer {
@@ -24,8 +27,8 @@ footer {
 }
 
 .content {
-  margin-left: 10px;
-  margin-right: 10px;
+  margin-left: 40px;
+  margin-right: 40px;
   margin-top: 50px;
   text-align: center;
 }

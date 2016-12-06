@@ -1,5 +1,6 @@
 <?php
   include("common/conexao.php");
+  require('common/check_loggedin.php');
   if (isset($_POST['nomeloja']) && isset($_POST['descricaoloja']) && isset($_POST['estabelecimento']) && isset($_POST['shopping_box']) && isset($_POST["checkboxvar"])) {
 
     $nomeloja = $_POST['nomeloja'];
@@ -38,14 +39,50 @@
       echo "Você não cadastrou uma imagem correta!";
     }
 
+    $queryprocura = "SELECT idbox FROM `loja`";
+    $resultprocura = mysqli_query($mysqli, $queryprocura);
+
+    foreach ($resultprocura as $id) {
+      echo $id["idbox"];
+      if ($shopping_box === $id["idbox"]){
+
+        ?>
+        <script>
+          alert('Essa box já está ocupada! Por favor confira suas informações!');
+        </script>"
+
+        <?php
+        die ();
+        header("location:cadastroloja.php");
+      }
+    }
+
     $query = "INSERT INTO `loja` (idloja, localizacao_loja, nome_loja, idestabelecimento, descricao, logoloja, fotofachada, idbox) VALUES (NULL, DEFAULT, '$nomeloja', '$estabelecimento', '$descricaoloja', '$mysqlImgMarca', '$mysqlImgFachada', '$shopping_box')";
     $result = mysqli_query($mysqli, $query);
 
     if($result){
-      echo "Sucesso!";
+      echo "Sucesso na primeira inclusão";
     } else {
-      echo "Falha!";
+      echo "Falha na primeira inclusão!";
     }
+
+    $querymax = "SELECT MAX(idloja) AS idloja FROM `loja`";
+    $resultmax = mysqli_query($mysqli, $querymax);
+    $idlojamax = mysqli_fetch_assoc($resultmax);
+    $idlojamaxfinal = $idlojamax ["idloja"];
+
+    foreach ($categorias as $categoria => $value) {
+      $querycategs = "INSERT INTO `lojascategorias` (idcategorias, idloja) VALUES ('$value', '$idlojamaxfinal')";
+      $resultcategs = mysqli_query($mysqli, $querycategs);
+
+      if ($resultcategs){
+        echo "Funcionou o cadastro da loja em todas as tabelas";
+      } else {
+        echo "Tá falhando no ultimo result";
+      }
+    }
+
+
   } else {
     echo $_POST['descricaoshopping'];
   }
@@ -97,20 +134,6 @@
           <br>
           <br>
 
-          <label for="">Categorias da Loja</label>
-          <?php
-            $sqlcategorias = "select * from categorias;";
-            $resultcategorias = mysqli_query($mysqli, $sqlcategorias);
-            while ($linhacategorias = mysqli_fetch_array($resultcategorias)) {
-              $idcateg = $linhacategorias["idcategorias"];
-              $desccateg = $linhacategorias["descricao"];
-              echo "<br><input type='checkbox' name='checkboxvar[]' value='$idcateg'/>".
-                  utf8_encode($desccateg);
-            }
-          ?>
-
-          <br>
-          <br>
           <?php
             include("conexao.php");
             $query = "SELECT * FROM shopping_box";
@@ -123,6 +146,22 @@
               <option value="<?php echo $prod['idbox'] ?>"><?php echo utf8_encode($prod['nome_box']) ?></option>
             <?php } ?>
           </select>
+
+          <br>
+          <br>
+
+          <label for="">Categorias da Loja</label>
+          <br />
+          <?php
+            $sqlcategorias = "select * from categorias;";
+            $resultcategorias = mysqli_query($mysqli, $sqlcategorias);
+            while ($linhacategorias = mysqli_fetch_array($resultcategorias)) {
+              $idcateg = $linhacategorias["idcategorias"];
+              $desccateg = $linhacategorias["descricao"];
+              echo "<br><input type='checkbox' name='checkboxvar[]' value='$idcateg'/>".
+                  utf8_encode($desccateg);
+            }
+          ?>
 
           <br>
           <br>

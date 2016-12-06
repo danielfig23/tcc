@@ -3,5 +3,5 @@
   if(isset($_SESSION["user"]))
       $user = $_SESSION["user"];
   else
-      header("location:index.php");
+      header("location:login.php");
 ?>

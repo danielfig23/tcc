@@ -1,6 +1,6 @@
 <?php
   include("common/conexao.php");
-
+  require('common/check_loggedin.php');
   if (isset($_POST['nomeshopping']) && isset($_POST['estado']) && isset($_POST['cidade']) && isset($_POST['localizacaoshopping']) && isset($_POST['descricaoshopping'])) {
 
     $nomeshopping = $_POST['nomeshopping'];

@@ -1,5 +1,6 @@
 <?php
   include("common/conexao.php");
+  require('common/check_loggedin.php');
   if (isset($_POST['categoria'])) {
 
     $categoria = $_POST['categoria'];
