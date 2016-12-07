@@ -1,19 +1,12 @@
 <?php
   include("common/conexao.php");
   require('common/check_loggedin.php');
-  if (isset($_POST['categoria'])) {
+  if (isset($_POST['categoria']) && isset($_POST['descricaocategoria'])) {
 
-    $categoria = $_POST['categoria'];
-    $query = "INSERT INTO `categorias` (idcategorias, descricao) VALUES (NULL, '$categoria')";
+    $categoria = utf8_decode($_POST['categoria']);
+    $descricaocategoria = utf8_decode ($_POST['descricaocategoria']);
+    $query = "INSERT INTO `categorias` (idcategorias, descricao, descricao_categoria) VALUES (NULL, '$categoria', '$descricaocategoria')";
     $result = mysqli_query($mysqli, $query);
-
-    if($result){
-      echo "Sucesso!";
-    } else {
-      echo "Falha!";
-    }
-  } else {
-    echo "Você esqueceu alguma coisa!";
   }
 ?>
 
@@ -38,7 +31,13 @@
           <label for="categoria">Categoria</label>
           <input type="text" id="categoria" name="categoria" value="" placeholder="Nova Categoria" required>
 
-          <br>
+          <br/>
+          <br/>
+
+          <label for="descricaocategoria">Descrição da Categoria</label>
+          <input type="text" id="descricaocategoria" name="descricaocategoria" value="" placeholder="Descrição da Categoria" required>
+
+          <br/>
 
           <input type="submit" value="Cadastrar">
         </div>

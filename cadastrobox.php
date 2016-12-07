@@ -1,23 +1,16 @@
 <?php
   include("common/conexao.php");
   require('common/check_loggedin.php');
-  
+
   if (isset($_POST['tamanhobox']) && isset($_POST['estabelecimento']) && isset($_POST['nomebox'])) {
 
     $tamanhobox = $_POST['tamanhobox'];
     $estabelecimento = $_POST['estabelecimento'];
-    $nomebox = $_POST['nomebox'];
+    $nomebox = utf8_decode($_POST['nomebox']);
 
     $query = "INSERT INTO `shopping_box` (idbox, tamanho, idestabelecimento, nome_box) VALUES (NULL, '$tamanhobox', '$estabelecimento', '$nomebox')";
     $result = mysqli_query($mysqli, $query);
 
-    if($result){
-      echo "Sucesso!";
-    } else {
-      echo "Falha!";
-    }
-  } else {
-    echo "Você esqueceu alguma coisa!";
   }
 ?>
 

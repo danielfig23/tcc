@@ -21,7 +21,7 @@
         if (password_verify($password, $gotHash)){
           session_start();
           $_SESSION["user"] = $username;
-          header("location:painel.php");
+          header("location:index.php");
         } else {
           echo "<script>alert('Usuário ou senha incorretos!');</script>";
         }
@@ -57,6 +57,7 @@
           <input type="password" id="password" name="password" value="" placeholder="Enter your Password" required><br>
 
           <input type="submit" value="Submit">
+          <p class="centeralize">Não possui conta? <a href="cadastro.php">Cadastre-se!</a></o>
         </div>
       </fieldset>
     </form>

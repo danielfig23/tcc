@@ -3,36 +3,30 @@
   require('common/check_loggedin.php');
   if (isset($_POST['nomeshopping']) && isset($_POST['estado']) && isset($_POST['cidade']) && isset($_POST['localizacaoshopping']) && isset($_POST['descricaoshopping'])) {
 
-    $nomeshopping = $_POST['nomeshopping'];
+    $nomeshopping = utf8_decode($_POST['nomeshopping']);
     $cidade = $_POST['cidade'];
     $localizacaoshopping = $_POST['localizacaoshopping'];
-    $descricaoshopping = $_POST['descricaoshopping'];
+    $descricaoshopping = utf8_decode($_POST['descricaoshopping']);
     $imagem = $_FILES["imagem"];
 
-    if($imagem != NULL) {
-      $nomeFinal = time().'.jpg';
-      if (move_uploaded_file($imagem['tmp_name'], $nomeFinal)) {
-        $tamanhoImg = filesize($nomeFinal);
-        $mysqlImg = addslashes(fread(fopen($nomeFinal, "r"), $tamanhoImg));
-        unlink($nomeFinal);
-        echo "FUNCIONOU O TRATAMENTO DA IMAGEM";
-      } else {
-        echo "Deu errado o segundo IF";
-      }
+    if (isset($_POST['caminhoimagem'])){
+      $caminhoimagem = $_POST['caminhoimagem'];
     } else {
-      echo "Você não cadastrou uma imagem correta!";
+      $caminhoimagem = "DEFAULT";
     }
 
-    $query = "INSERT INTO `estabelecimento` (idestabelecimento, nome_estabelecimento, idcidade, horarioabeds, horariofecds, horarioabedom, horariofecdom, endereco, mapa, descricao) VALUES (NULL, '$nomeshopping', '$cidade', DEFAULT, DEFAULT, DEFAULT, DEFAULT, '$localizacaoshopping', '$mysqlImg', '$descricaoshopping')";
+    // if($imagem != NULL) {
+    //   $nomeFinal = time().'.jpg';
+    //   if (move_uploaded_file($imagem['tmp_name'], $nomeFinal)) {
+    //     $tamanhoImg = filesize($nomeFinal);
+    //     $mysqlImg = addslashes(fread(fopen($nomeFinal, "r"), $tamanhoImg));
+    //     unlink($nomeFinal);
+    //   } else {
+    //   }
+    // }
+
+    $query = "INSERT INTO `estabelecimento` (idestabelecimento, nome_estabelecimento, idcidade, horarioabeds, horariofecds, horarioabedom, horariofecdom, endereco, mapa, descricao, caminhoimagem) VALUES (NULL, '$nomeshopping', '$cidade', DEFAULT, DEFAULT, DEFAULT, DEFAULT, '$localizacaoshopping', NULL, '$descricaoshopping', '$caminhoimagem')";
     $result = mysqli_query($mysqli, $query);
-
-    if($result){
-      echo "Sucesso!";
-    } else {
-      echo "Falha!";
-    }
-  } else {
-    echo $_POST['cidade'];
   }
 ?>
 
@@ -68,7 +62,7 @@
           <label for="">Selecione o Estado</label>
           <select name="estado">
             <?php while($prod = mysqli_fetch_assoc($result_estado)) { ?>
-              <option value="<?php echo $prod['id'] ?>"><?php echo utf8_encode($prod['nome']) ?></option>
+              <option value="<?php echo $prod['uf'] ?>"><?php echo utf8_encode($prod['nome']) ?></option>
             <?php } ?>
           </select>
 
@@ -103,11 +97,8 @@
           <br>
           <br>
 
-          <input type="hidden" name="MAX_FILE_SIZE" value="99999999"/>
-          <label for="imagem">Imagem (Mapa)</label><br><br>
-          <fieldset>
-		         <input type="file" id="imagem" name="imagem"/>
-          </fieldset>
+          <label for="caminhoimagem">Caminho da Imagem</label>
+          <input type="text" id="caminhoimagem" name="caminhoimagem" value="" placeholder="Digite o caminho da Imagem" required>
 
           <br>
 

@@ -1,30 +1,16 @@
 <?php
+
 	header( 'Cache-Control: no-cache' );
 	header( 'Content-type: application/xml; charset="utf-8"', true );
-
-	$host = "localhost";
-	$usuario = "root";
-	$senha = "root";
-	$bd = "mapstrack";
-
-	$conexao = new mysqli($host, $usuario, $senha, $bd);
-	mysqli_set_charset($conexao, "utf8");
-
-	$cod_estados = mysqli_real_escape_string($conexao, $_REQUEST['cod_estados']);
-
+	include("common/conexao.php");
+	$cod_estados = mysqli_real_escape_string($mysqli, $_REQUEST['cod_estados']);
 	$cidades = array();
-
-	$sql = "SELECT id as cod_cidades, nome
-			FROM cidades
-			WHERE estado=$cod_estados
-			ORDER BY nome";
-	$res = mysqli_query( $conexao, $sql );
-	while ( $row = mysqli_fetch_array( $res ) ) {
-		$cidades[] = array(
-			'cod_cidades'	=> $row['cod_cidades'],
-			'nome'			=> $row['nome'],
-		);
+	$uf = "SC";
+	$query = "SELECT idcidade as cod_cidades, nome_cidade FROM cidade WHERE uf_cidade=$uf ORDER BY nome_cidade";
+	$result = mysqli_query($mysqli, $query);
+	while ($row = mysqli_fetch_array($result)) {
+		echo "bla";
+		$cidades[] = array('cod_cidades' => $row['cod_cidades'], 'nome_cidade' => $row['nome_cidade'],);
 	}
-
 	echo( json_encode( $cidades ) );
 ?>

@@ -1,6 +1,7 @@
 <?php
 
   include("common/conexao.php");
+  header('charset="utf-8"', true);
 
   session_start();
   session_destroy();
@@ -15,9 +16,9 @@
     $query = "INSERT INTO `adm` (idadm, nome_adm, sobrenome_adm, email_adm, cpf_adm, senha_adm, hidden) VALUES (NULL, '$firstname', '$lastname', '$username', '$cpf', '$password', DEFAULT)";
     $result = mysqli_query($mysqli, $query);
     if($result){
-      echo "Sucesso!";
+      echo "<script>alert('Usuário cadastrado com sucesso!');</script>";
     } else {
-      echo "Falha!";
+      echo "<script>alert('Informação incorreta, por favor tente novamente!');</script>";
     }
   }
 ?>
@@ -39,7 +40,7 @@
       <fieldset>
         <div class="cadastro_content">
           <label for="cpf">CPF</label>
-          <input type="text" id="cpf" name="cpf" value="" placeholder="Entre seu CPF" required><br><br>
+          <input type="text" id="cpf" name="cpf" value="" placeholder="Entre seu CPF" pattern="[0-9]{11}" maxlength="11" required><br><br>
 
           <label for="firstname">First Name</label>
           <input type="text" id="firstname" name="firstname" value="" placeholder="Enter your Name" required><br><br>

@@ -1,5 +1,5 @@
 <nav>
-  <ul>
+  <ul class="ulnav">
     <li><a href="index.php">Início</a></li>
     <li><a href="contato.php">Contato</a></li>
     <li class="dropdown">

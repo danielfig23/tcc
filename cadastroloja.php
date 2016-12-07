@@ -3,41 +3,48 @@
   require('common/check_loggedin.php');
   if (isset($_POST['nomeloja']) && isset($_POST['descricaoloja']) && isset($_POST['estabelecimento']) && isset($_POST['shopping_box']) && isset($_POST["checkboxvar"])) {
 
-    $nomeloja = $_POST['nomeloja'];
-    $descricaoloja = $_POST['descricaoloja'];
-    $estabelecimento = $_POST['estabelecimento'];
+    $nomeloja = utf8_decode($_POST['nomeloja']);
+    $descricaoloja = utf8_decode($_POST['descricaoloja']);
+    $estabelecimento = utf8_decode($_POST['estabelecimento']);
     $imagemmarca = $_FILES["imagemmarca"];
     $imagemfachada = $_FILES["imagemfachada"];
     $categorias = $_POST["checkboxvar"];
     $shopping_box = $_POST["shopping_box"];
 
-    if($imagemmarca != NULL) {
-      $nomeFinalMarca = time().'marca.jpg';
-      if (move_uploaded_file($imagemmarca['tmp_name'], $nomeFinalMarca)) {
-        $tamanhoImgMarca = filesize($nomeFinalMarca);
-        $mysqlImgMarca = addslashes(fread(fopen($nomeFinalMarca, "r"), $tamanhoImgMarca));
-        unlink($nomeFinalMarca);
-        echo "FUNCIONOU O TRATAMENTO DA IMAGEM DA MARCA";
-      } else {
-        echo "Deu errado o segundo IF da marca";
-      }
+
+    if (isset($_POST['caminhoimagem'])){
+      $caminhoimagembox = $_POST['caminhoimagem'];
     } else {
-      echo "Você não cadastrou uma imagem correta!";
+      $caminhoimagembox = "DEFAULT";
     }
 
-    if($imagemfachada != NULL) {
-      $nomeFinalFachada = time().'fachada.jpg';
-      if (move_uploaded_file($imagemfachada['tmp_name'], $nomeFinalFachada)) {
-        $tamanhoImgFachada = filesize($nomeFinalFachada);
-        $mysqlImgFachada = addslashes(fread(fopen($nomeFinalFachada, "r"), $tamanhoImgFachada));
-        unlink($nomeFinalFachada);
-        echo "FUNCIONOU O TRATAMENTO DA IMAGEM DA FACHADA";
-      } else {
-        echo "Deu errado o segundo IF DA FACHADA";
-      }
-    } else {
-      echo "Você não cadastrou uma imagem correta!";
-    }
+    // if($imagemmarca != NULL) {
+    //   $nomeFinalMarca = time().'marca.jpg';
+    //   if (move_uploaded_file($imagemmarca['tmp_name'], $nomeFinalMarca)) {
+    //     $tamanhoImgMarca = filesize($nomeFinalMarca);
+    //     $mysqlImgMarca = addslashes(fread(fopen($nomeFinalMarca, "r"), $tamanhoImgMarca));
+    //     unlink($nomeFinalMarca);
+    //     echo "FUNCIONOU O TRATAMENTO DA IMAGEM DA MARCA";
+    //   } else {
+    //     echo "Deu errado o segundo IF da marca";
+    //   }
+    // } else {
+    //   echo "Você não cadastrou uma imagem correta!";
+    // }
+    //
+    // if($imagemfachada != NULL) {
+    //   $nomeFinalFachada = time().'fachada.jpg';
+    //   if (move_uploaded_file($imagemfachada['tmp_name'], $nomeFinalFachada)) {
+    //     $tamanhoImgFachada = filesize($nomeFinalFachada);
+    //     $mysqlImgFachada = addslashes(fread(fopen($nomeFinalFachada, "r"), $tamanhoImgFachada));
+    //     unlink($nomeFinalFachada);
+    //     echo "<script>alert('Funcionou o tratamento da imagem fachada!');</script>";
+    //   } else {
+    //     echo "<script>alert('O tratamento da imagem fachada deu erro!');</script>";
+    //   }
+    // } else {
+    //   echo "<script>alert('Você não cadastrou uma imagem corretamente!');</script>";
+    // }
 
     $queryprocura = "SELECT idbox FROM `loja`";
     $resultprocura = mysqli_query($mysqli, $queryprocura);
@@ -47,9 +54,10 @@
       if ($shopping_box === $id["idbox"]){
 
         ?>
+
         <script>
           alert('Essa box já está ocupada! Por favor confira suas informações!');
-        </script>"
+        </script>
 
         <?php
         die ();
@@ -57,14 +65,8 @@
       }
     }
 
-    $query = "INSERT INTO `loja` (idloja, localizacao_loja, nome_loja, idestabelecimento, descricao, logoloja, fotofachada, idbox) VALUES (NULL, DEFAULT, '$nomeloja', '$estabelecimento', '$descricaoloja', '$mysqlImgMarca', '$mysqlImgFachada', '$shopping_box')";
+    $query = "INSERT INTO `loja` (idloja, localizacao_loja, nome_loja, idestabelecimento, descricao, logoloja, fotofachada, idbox, caminhoimagem) VALUES (NULL, DEFAULT, '$nomeloja', '$estabelecimento', '$descricaoloja', '$mysqlImgMarca', '$mysqlImgFachada', '$shopping_box', '$caminhoimagembox')";
     $result = mysqli_query($mysqli, $query);
-
-    if($result){
-      echo "Sucesso na primeira inclusão";
-    } else {
-      echo "Falha na primeira inclusão!";
-    }
 
     $querymax = "SELECT MAX(idloja) AS idloja FROM `loja`";
     $resultmax = mysqli_query($mysqli, $querymax);
@@ -74,17 +76,7 @@
     foreach ($categorias as $categoria => $value) {
       $querycategs = "INSERT INTO `lojascategorias` (idcategorias, idloja) VALUES ('$value', '$idlojamaxfinal')";
       $resultcategs = mysqli_query($mysqli, $querycategs);
-
-      if ($resultcategs){
-        echo "Funcionou o cadastro da loja em todas as tabelas";
-      } else {
-        echo "Tá falhando no ultimo result";
-      }
     }
-
-
-  } else {
-    echo $_POST['descricaoshopping'];
   }
 ?>
 
@@ -125,6 +117,7 @@
           ?>
 
           <label for="">Selecione um Estabelecimento</label>
+          <span>(Não encontrou o estabelecimento desejado? <a href="cadastroshopping.php">Cadastre!)</a></span>
           <select name="estabelecimento">
             <?php while($prod = mysqli_fetch_assoc($result)) { ?>
               <option value="<?php echo $prod['idestabelecimento'] ?>"><?php echo utf8_encode($prod['nome_estabelecimento']) ?></option>
@@ -141,9 +134,10 @@
           ?>
 
           <label for="">Selecione uma Box</label>
+          <span>(Não encontrou a box desejada? <a href="cadastrobox.php">Cadastre!)</a></span>
           <select name="shopping_box">
             <?php while($prod = mysqli_fetch_assoc($result)) { ?>
-              <option value="<?php echo $prod['idbox'] ?>"><?php echo utf8_encode($prod['nome_box']) ?></option>
+              <option value="<?php echo $prod['idbox'] ?>"><?php echo utf8_encode($prod['nome_box'])?></option>
             <?php } ?>
           </select>
 
@@ -151,10 +145,16 @@
           <br>
 
           <label for="">Categorias da Loja</label>
+          <span>(Não encontrou a categoria desejada? <a href="cadastrocategoria.php">Cadastre!)</a></span>
           <br />
           <?php
             $sqlcategorias = "select * from categorias;";
             $resultcategorias = mysqli_query($mysqli, $sqlcategorias);
+            $row_cnt = $resultcategorias->num_rows;
+            if ($row_cnt == 0) {
+              echo "<br/><br/><p>Não há categorias cadastradas neste sistema.</p>";
+            }
+
             while ($linhacategorias = mysqli_fetch_array($resultcategorias)) {
               $idcateg = $linhacategorias["idcategorias"];
               $desccateg = $linhacategorias["descricao"];
@@ -166,26 +166,8 @@
           <br>
           <br>
 
-          <input type="hidden" name="MAX_FILE_SIZE" value="99999999"/>
-          <label for="imagem">Imagem (Marca)</label>
-
-          <br>
-          <br>
-
-          <fieldset>
-		         <input type="file" name="imagemmarca"/>
-          </fieldset>
-
-          <br>
-
-          <label for="imagem">Imagem (Fachada)</label>
-
-          <br>
-          <br>
-
-          <fieldset>
-             <input type="file" name="imagemfachada"/>
-          </fieldset>
+          <label for="caminhoimagem">Caminho da Imagem</label>
+          <input type="text" id="caminhoimagem" name="caminhoimagem" value="" placeholder="Digite o caminho da Imagem" required>
 
           <br>
 
