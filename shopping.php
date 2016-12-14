@@ -30,13 +30,14 @@
 
   <div class="content">
     <?php
+    include("common/conexao.php");
 
     if(isset($_GET["idshopping"])) {
       $idshopping = $_GET["idshopping"];
       $query = 'SELECT * FROM estabelecimento WHERE idestabelecimento = '.$idshopping.'';
       $result =  mysqli_query($mysqli, $query);
       $nomeshopping = mysqli_fetch_assoc($result);
-      echo '<h2 class="shopping">'.$nomeshopping.'</h2>';
+      echo '<h2 class="shopping">'.utf8_encode($nomeshopping['nome_estabelecimento']).'</h2>';
     }
     ?>
 
@@ -87,9 +88,7 @@
         echo "<h2>Categorias</h2>";
         $query = "SELECT * FROM categorias";
         $result = mysqli_query($mysqli, $query);
-        $control = 0;
         foreach ($result as $categ) {
-          $control = $control + 1;
           echo '<a href="shopping.php?idshopping='.$idshopping.'&id='.$categ["idcategorias"].'">'.utf8_encode($categ["descricao"]).'</a><br/>';
           echo '<p>'.$categ['descricao_categoria'].'</p>';
         }

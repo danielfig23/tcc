@@ -50,7 +50,6 @@
     $resultprocura = mysqli_query($mysqli, $queryprocura);
 
     foreach ($resultprocura as $id) {
-      echo $id["idbox"];
       if ($shopping_box === $id["idbox"]){
 
         ?>
@@ -148,7 +147,7 @@
           <span>(Não encontrou a categoria desejada? <a href="cadastrocategoria.php">Cadastre!)</a></span>
           <br />
           <?php
-            $sqlcategorias = "select * from categorias;";
+            $sqlcategorias = "SELECT * FROM categorias;";
             $resultcategorias = mysqli_query($mysqli, $sqlcategorias);
             $row_cnt = $resultcategorias->num_rows;
             if ($row_cnt == 0) {
@@ -182,19 +181,3 @@
   </footer>
 </body>
 </html>
-
-<?php
-include("conexao.php");
-
-
-
-
-$nomeloja = $_POST['nomeloja'];
-$localizacaoloja = $_POST['localizacaoloja'];
-$descricaoloja = $_POST['descricaoloja'];
-
-$imagem = $_FILES["imagem"];
-
-
-
-?>

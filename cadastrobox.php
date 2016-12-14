@@ -36,7 +36,7 @@
           <input type="text" id="tamanhobox" name="tamanhobox" value="" placeholder="Tamanho da Box" required>
 
           <?php
-            include("conexao.php");
+            // include("conexao.php");
             $query = "SELECT * FROM estabelecimento";
             $result = mysqli_query($mysqli, $query);
           ?>

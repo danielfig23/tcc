@@ -29,8 +29,8 @@
     <input type="submit" value="Submit">
   </div>
 
-  <!-- <footer>
-    <span>Este site foi feito por Daniel Figueredo e Henrique Zanin</span>
-  </footer> -->
+  <footer>
+    <p id="footer_content">Daniel Figueredo e Henrique Zanin</p>
+  </footer>
 </body>
 </html>
