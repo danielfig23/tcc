@@ -56,6 +56,7 @@
           <label for="password">Password</label>
           <input type="password" id="password" name="password" value="" placeholder="Enter your Password" required><br>
 
+          <br/>
           <input type="submit" value="Submit">
           <p class="centeralize">Não possui conta? <a href="cadastro.php">Cadastre-se!</a></o>
         </div>

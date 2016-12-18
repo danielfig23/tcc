@@ -15,7 +15,7 @@
   <script type="text/javascript" src="fancybox/source/helpers/jquery.fancybox-media.js?v=1.0.6"></script>
 
   <link rel="stylesheet" href="fancybox/source/helpers/jquery.fancybox-thumbs.css?v=1.0.7" type="text/css" media="screen" />
-<script type="text/javascript" src="fancybox/source/helpers/jquery.fancybox-thumbs.js?v=1.0.7"></script>
+  <script type="text/javascript" src="fancybox/source/helpers/jquery.fancybox-thumbs.js?v=1.0.7"></script>
 </head>
 <body>
 
@@ -90,7 +90,7 @@
         $result = mysqli_query($mysqli, $query);
         foreach ($result as $categ) {
           echo '<a href="shopping.php?idshopping='.$idshopping.'&id='.$categ["idcategorias"].'">'.utf8_encode($categ["descricao"]).'</a><br/>';
-          echo '<p>'.$categ['descricao_categoria'].'</p>';
+          echo '<p>'.utf8_encode($categ['descricao_categoria']).'</p>';
         }
       }
     ?>

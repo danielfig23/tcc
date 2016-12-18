@@ -157,8 +157,7 @@
             while ($linhacategorias = mysqli_fetch_array($resultcategorias)) {
               $idcateg = $linhacategorias["idcategorias"];
               $desccateg = $linhacategorias["descricao"];
-              echo "<br><input type='checkbox' name='checkboxvar[]' value='$idcateg'/>".
-                  utf8_encode($desccateg);
+              echo "<br><input type='checkbox' name='checkboxvar[]' value='$idcateg'/>".utf8_encode($desccateg)." - <a href='processaeditarcategoria.php?idedicao=$idcateg'>Editar</a> - <a href='processaexcluircategoria.php?idexclusao=$idcateg'>Excluir</a>";
             }
           ?>
 

@@ -1,3 +1,3 @@
 <header>
-   <img src="images/logo.png" alt="LogoSite" class="logosite" height="100" width="100">
+   <img src="images/logomapstrack.png" alt="LogoSite" class="logosite">
 </header>

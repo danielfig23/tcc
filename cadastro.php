@@ -29,6 +29,8 @@
   <title>Início</title>
   <meta charset="UTF-8">
   <link type="text/css" rel="stylesheet" href="style.css">
+  <script type="text/javascript" src="js/jquery-1.2.6.pack.js"></script>
+  <script type="text/javascript" src="js/jquery.maskedinput-1.1.4.pack.js"/></script>
 </head>
 <body>
 
@@ -39,8 +41,14 @@
     <form method="POST">
       <fieldset>
         <div class="cadastro_content">
+
+          <script type="text/javascript">
+          $(document).ready(function(){
+        	$("#cpf").mask("999.999.999-99");});
+          </script>
+
           <label for="cpf">CPF</label>
-          <input type="text" id="cpf" name="cpf" value="" placeholder="Entre seu CPF" pattern="[0-9]{11}" maxlength="11" required><br><br>
+          <input type="text" id="cpf" name="cpf" value="" placeholder="Entre seu CPF" required><br><br>
 
           <label for="firstname">First Name</label>
           <input type="text" id="firstname" name="firstname" value="" placeholder="Enter your Name" required><br><br>
