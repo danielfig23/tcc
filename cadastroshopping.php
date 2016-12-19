@@ -1,7 +1,7 @@
 <?php
   include("common/conexao.php");
   require('common/check_loggedin.php');
-  if (isset($_POST['nomeshopping']) && isset($_POST['estado']) && isset($_POST['cidade']) && isset($_POST['localizacaoshopping']) && isset($_POST['descricaoshopping'])) {
+  if  (isset($_POST['nomeshopping']) && isset($_POST['estado']) && isset($_POST['cidade']) && isset($_POST['localizacaoshopping']) && isset($_POST['descricaoshopping'])) {
 
     $nomeshopping = utf8_decode($_POST['nomeshopping']);
     $cidade = $_POST['cidade'];
@@ -9,23 +9,41 @@
     $descricaoshopping = utf8_decode($_POST['descricaoshopping']);
     $imagem = $_FILES["imagem"];
 
+    #segundo http://www.w3schools.com/php/php_file_upload.asp
+
+    $target_dir = "uploads/";
+    $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
+    $tmp_name = $_FILES["fileToUpload"]["tmp_name"];
+    $name = $_FILES["fileToUpload"]["name"];
+    $uploadOk = 1;
+    $imageFileType = pathinfo($target_file, PATHINFO_EXTENSION);
+
+    $check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
+    if($check !== false) {
+        echo "File is an image - " . $check["mime"] . ".";
+        $uploadOk = 1;
+    } else {
+        echo "File is not an image.";
+        $uploadOk = 0;
+    }
+
     if (isset($_POST['caminhoimagem'])){
       $caminhoimagem = $_POST['caminhoimagem'];
     } else {
       $caminhoimagem = "DEFAULT";
     }
 
-    // if($imagem != NULL) {
-    //   $nomeFinal = time().'.jpg';
-    //   if (move_uploaded_file($imagem['tmp_name'], $nomeFinal)) {
-    //     $tamanhoImg = filesize($nomeFinal);
-    //     $mysqlImg = addslashes(fread(fopen($nomeFinal, "r"), $tamanhoImg));
-    //     unlink($nomeFinal);
-    //   } else {
-    //   }
-    // }
+    if ($uploadOk == 0) {
+        echo "Sorry, your file was not uploaded.";
+    } else {
+        if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
+            echo "The file ". basename( $_FILES["fileToUpload"]["name"]). " has been uploaded.";
+        } else {
+            echo "Sorry, there was an error uploading your file.";
+        }
+    }
 
-    $query = "INSERT INTO `estabelecimento` (idestabelecimento, nome_estabelecimento, idcidade, horarioabeds, horariofecds, horarioabedom, horariofecdom, endereco, mapa, descricao, caminhoimagem) VALUES (NULL, '$nomeshopping', '$cidade', DEFAULT, DEFAULT, DEFAULT, DEFAULT, '$localizacaoshopping', NULL, '$descricaoshopping', '$caminhoimagem')";
+    $query = "INSERT INTO `estabelecimento` (idestabelecimento, nome_estabelecimento, idcidade, horarioabeds, horariofecds, horarioabedom, horariofecdom, endereco, mapa, descricao, caminhoimagem) VALUES (NULL, '$nomeshopping', '$cidade', DEFAULT, DEFAULT, DEFAULT, DEFAULT, '$localizacaoshopping', NULL, '$descricaoshopping', '$target_file')";
     $result = mysqli_query($mysqli, $query);
   }
 ?>
@@ -94,12 +112,14 @@
           <label for="descricaoshopping">Descrição do Shopping</label>
           <input type="text" id="descricaoshopping" class="grande" name="descricaoshopping" value="" placeholder="Entre com a Descrição do Shopping" required>
 
+
           <br>
           <br>
 
-          <label for="caminhoimagem">Caminho da Imagem</label>
-          <input type="text" id="caminhoimagem" name="caminhoimagem" value="" placeholder="Digite o caminho da Imagem" required>
+          <label for="fileToUpload">Imagem</label>
+          <input type="file" name="fileToUpload" id="fileToUpload">
 
+          <br>
           <br>
 
           <input type="submit" value="Cadastrar">

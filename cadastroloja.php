@@ -11,49 +11,44 @@
     $categorias = $_POST["checkboxvar"];
     $shopping_box = $_POST["shopping_box"];
 
+    $target_dir = "uploads/";
+    $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
+    $tmp_name = $_FILES["fileToUpload"]["tmp_name"];
+    $name = $_FILES["fileToUpload"]["name"];
+    $uploadOk = 1;
+    $imageFileType = pathinfo($target_file,PATHINFO_EXTENSION);
 
-    if (isset($_POST['caminhoimagem'])){
-      $caminhoimagembox = $_POST['caminhoimagem'];
+    $check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
+    if($check !== false) {
+        echo "File is an image - " . $check["mime"] . ".";
+        $uploadOk = 1;
     } else {
-      $caminhoimagembox = "DEFAULT";
+        echo "File is not an image.";
+        $uploadOk = 0;
     }
 
-    // if($imagemmarca != NULL) {
-    //   $nomeFinalMarca = time().'marca.jpg';
-    //   if (move_uploaded_file($imagemmarca['tmp_name'], $nomeFinalMarca)) {
-    //     $tamanhoImgMarca = filesize($nomeFinalMarca);
-    //     $mysqlImgMarca = addslashes(fread(fopen($nomeFinalMarca, "r"), $tamanhoImgMarca));
-    //     unlink($nomeFinalMarca);
-    //     echo "FUNCIONOU O TRATAMENTO DA IMAGEM DA MARCA";
-    //   } else {
-    //     echo "Deu errado o segundo IF da marca";
-    //   }
-    // } else {
-    //   echo "Você não cadastrou uma imagem correta!";
-    // }
-    //
-    // if($imagemfachada != NULL) {
-    //   $nomeFinalFachada = time().'fachada.jpg';
-    //   if (move_uploaded_file($imagemfachada['tmp_name'], $nomeFinalFachada)) {
-    //     $tamanhoImgFachada = filesize($nomeFinalFachada);
-    //     $mysqlImgFachada = addslashes(fread(fopen($nomeFinalFachada, "r"), $tamanhoImgFachada));
-    //     unlink($nomeFinalFachada);
-    //     echo "<script>alert('Funcionou o tratamento da imagem fachada!');</script>";
-    //   } else {
-    //     echo "<script>alert('O tratamento da imagem fachada deu erro!');</script>";
-    //   }
-    // } else {
-    //   echo "<script>alert('Você não cadastrou uma imagem corretamente!');</script>";
-    // }
+    if (isset($_POST['caminhoimagem'])){
+      $caminhoimagem = $_POST['caminhoimagem'];
+    } else {
+      $caminhoimagem = "DEFAULT";
+    }
+
+    if ($uploadOk == 0) {
+        echo "Sorry, your file was not uploaded.";
+    } else {
+        if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
+            echo "The file ". basename( $_FILES["fileToUpload"]["name"]). " has been uploaded.";
+        } else {
+            echo "Sorry, there was an error uploading your file.";
+        }
+    }
 
     $queryprocura = "SELECT idbox FROM `loja`";
     $resultprocura = mysqli_query($mysqli, $queryprocura);
 
     foreach ($resultprocura as $id) {
       if ($shopping_box === $id["idbox"]){
-
         ?>
-
         <script>
           alert('Essa box já está ocupada! Por favor confira suas informações!');
         </script>
@@ -64,7 +59,7 @@
       }
     }
 
-    $query = "INSERT INTO `loja` (idloja, localizacao_loja, nome_loja, idestabelecimento, descricao, logoloja, fotofachada, idbox, caminhoimagem) VALUES (NULL, DEFAULT, '$nomeloja', '$estabelecimento', '$descricaoloja', '$mysqlImgMarca', '$mysqlImgFachada', '$shopping_box', '$caminhoimagembox')";
+    $query = "INSERT INTO `loja` (idloja, localizacao_loja, nome_loja, idestabelecimento, descricao, logoloja, fotofachada, idbox, caminhoimagem) VALUES (NULL, DEFAULT, '$nomeloja', '$estabelecimento', '$descricaoloja', '$mysqlImgMarca', '$mysqlImgFachada', '$shopping_box', '$target_file')";
     $result = mysqli_query($mysqli, $query);
 
     $querymax = "SELECT MAX(idloja) AS idloja FROM `loja`";
@@ -164,8 +159,8 @@
           <br>
           <br>
 
-          <label for="caminhoimagem">Caminho da Imagem</label>
-          <input type="text" id="caminhoimagem" name="caminhoimagem" value="" placeholder="Digite o caminho da Imagem" required>
+          <label for="fileToUpload">Imagem</label>
+          <input type="file" name="fileToUpload" id="fileToUpload">
 
           <br>
 

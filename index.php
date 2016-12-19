@@ -44,7 +44,7 @@
           echo "<h4> <a href='processaeditarshopping.php?idedicao=".$estabelecimento["idestabelecimento"]."'>Editar</a> - <a href='processaexcluirshopping.php?idexclusao=".$estabelecimento["idestabelecimento"]."'>Excluir</a></h4>";
         }
 
-        echo "<img src='$caminhoimagem'></img>";
+        echo "<img class='fotoloja' src='$caminhoimagem'></img>";
         echo '<p>'.utf8_encode($estabelecimento['descricao']).'</p>';
         echo "<br/>";
       }

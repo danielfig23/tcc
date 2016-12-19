@@ -22,7 +22,6 @@
         $escolha = $_GET["escolha"];
         if ($escolha == 1){
           $idexclusao = $_GET["idexclusao"];
-
           $query2 = "DELETE FROM categorias WHERE idcategorias = $idexclusao";
           $result2 = mysqli_query($mysqli, $query2);
           if ($mysqli->error){

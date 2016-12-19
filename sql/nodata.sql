@@ -29,11 +29,11 @@ CREATE TABLE `adm` (
   `nome_adm` varchar(16) NOT NULL,
   `sobrenome_adm` varchar(32) NOT NULL,
   `email_adm` varchar(30) NOT NULL,
-  `cpf_adm` varchar(11) NOT NULL,
+  `cpf_adm` varchar(14) NOT NULL,
   `senha_adm` varchar(60) NOT NULL,
   `hidden` varchar(10) NOT NULL DEFAULT 'FALSE',
   PRIMARY KEY (`idadm`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -48,7 +48,7 @@ CREATE TABLE `categorias` (
   `descricao` varchar(100) DEFAULT NULL,
   `descricao_categoria` varchar(1000) DEFAULT NULL,
   PRIMARY KEY (`idcategorias`)
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -88,7 +88,7 @@ CREATE TABLE `estabelecimento` (
   PRIMARY KEY (`idestabelecimento`),
   KEY `idcidade_idx` (`idcidade`),
   CONSTRAINT `fk1` FOREIGN KEY (`idcidade`) REFERENCES `cidade` (`idcidade`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=87 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -105,7 +105,7 @@ CREATE TABLE `estado` (
   `pais` varchar(25) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_Estado_pais` (`pais`)
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -130,7 +130,7 @@ CREATE TABLE `loja` (
   KEY `fk_loja_2_idx` (`idbox`),
   CONSTRAINT `fk_loja_1` FOREIGN KEY (`idestabelecimento`) REFERENCES `estabelecimento` (`idestabelecimento`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_loja_2` FOREIGN KEY (`idbox`) REFERENCES `shopping_box` (`idbox`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -165,7 +165,7 @@ CREATE TABLE `shopping_box` (
   PRIMARY KEY (`idbox`),
   KEY `fk_box_2_idx` (`idestabelecimento`),
   CONSTRAINT `fk_box_2` FOREIGN KEY (`idestabelecimento`) REFERENCES `estabelecimento` (`idestabelecimento`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -177,4 +177,4 @@ CREATE TABLE `shopping_box` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-12-07  4:06:25
+-- Dump completed on 2016-12-19  1:05:26
