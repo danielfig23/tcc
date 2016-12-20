@@ -4,8 +4,8 @@
 
   if (isset($_POST['categoria']) && isset($_POST['descricaocategoria'])) {
     $idcategoria = $_GET["idedicao"];
-    $categoria = $_POST['categoria'];
-    $descricaocategoria = $_POST['descricaocategoria'];
+    $categoria = utf8_decode($_POST['categoria']);
+    $descricaocategoria = utf8_decode($_POST['descricaocategoria']);
     $query1 = "UPDATE categorias SET descricao='$categoria', descricao_categoria='$descricaocategoria' WHERE idcategorias=$idcategoria";
 
     if ($mysqli->query($query1) === TRUE) {

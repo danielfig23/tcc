@@ -56,9 +56,17 @@
         AND estabelecimento.idestabelecimento = $idshopping";
 
         $result = mysqli_query($mysqli, $query);
+
         foreach ($result as $loja) {
+          
+          $id = $loja["idloja"];
+          $querya = "SELECT * FROM loja WHERE idloja=$id";
+          $resulta = mysqli_query($mysqli, $querya);
+          $des = mysqli_fetch_assoc($resulta);
+          $desc = $des ["descricao"];
+
           echo '<a href="shopping.php?idloja='.$loja["idloja"].'">'.utf8_encode($loja["nome_loja"]).'</a><br/>';
-          echo '<p>'.utf8_encode($loja['descricao']).'</p>';
+          echo '<p>'.utf8_encode($desc).'</p>';
         }
       } elseif (isset($_GET["idloja"])) {
         $id = $_GET["idloja"];
@@ -80,7 +88,9 @@
           $nomeb = utf8_encode($nomebox['nome_box']);
 
           echo '<h3>'.utf8_encode($n_loja["nome_loja"]).'</h3>';
-          echo "<br/>";
+          if(isset($_SESSION["user"])){
+            echo "<h4> <a href='processaeditarloja.php?idedicao=".$id."'>Editar</a> - <a href='processaexcluirloja.php?idexclusao=".$id."'>Excluir</a></h4>";
+          }
           echo "<a id='single_1' title='Box: $nomeb' href='$caminhoimagem'><img class='fotoloja' src='$caminhoimagem' alt=''/></a>";
           echo '<p>'.utf8_encode($n_loja['descricao']).'</p>';
         }

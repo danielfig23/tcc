@@ -4,8 +4,8 @@
 
   if (isset($_POST['nomeshopping']) && isset($_POST['descricaoshopping'])) {
     $idestabelecimento2 = $_GET["idedicao"];
-    $nomeshopping2 = $_POST['nomeshopping'];
-    $descricaoshopping2 = $_POST['descricaoshopping'];
+    $nomeshopping2 = utf8_decode( $_POST['nomeshopping']);
+    $descricaoshopping2 = utf8_decode($_POST['descricaoshopping']);
     $query1 = "UPDATE estabelecimento SET nome_estabelecimento='$nomeshopping2', descricao='$descricaoshopping2' WHERE idestabelecimento=$idestabelecimento2";
 
     if ($mysqli->query($query1) === TRUE) {
